@@ -10,8 +10,7 @@ export default class MyMap extends Component {
   render() {
     // const { options } = this.props
     const position = [this.state.lat, this.state.lng]
-    console.log(position)
-    console.log(window)
+
     if (typeof window !== "undefined") {
       return (
         // <div>123</div>
