@@ -1,16 +1,16 @@
-import React from "react"
-import { Link } from "gatsby"
+import React from 'react';
+import { Link } from 'gatsby';
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+import Layout from '../components/layout';
+import Image from '../components/image';
+import SEO from '../components/seo';
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
-    <h1>Hi people. I'm Chao</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
+    <h1>Hi people. I am Chao</h1>
+    <p>Welcome to my new Gatsby site.</p>
+    <p>Build gatsby site with leaflet map</p>
     <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
       <Image />
     </div>
@@ -18,6 +18,6 @@ const IndexPage = () => (
     <Link to="/map/">Go to page map</Link>
     <Link to="/not/">Go to page not</Link>
   </Layout>
-)
+);
 
-export default IndexPage
+export default IndexPage;

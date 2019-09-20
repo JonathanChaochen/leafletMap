@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `My Gatsby Site`,
+    description: `React leaflet map, data visualization`,
+    author: `Chao Chen`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -30,11 +30,11 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-react-leaflet',
       options: {
-        linkStyles: true // (default: true) Enable/disable loading stylesheets via CDN
-      }
-    }
+        linkStyles: true, // (default: true) Enable/disable loading stylesheets via CDN
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
   ],
-}
+};
