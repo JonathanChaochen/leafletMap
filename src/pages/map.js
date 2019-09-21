@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, Marker, Popup } from 'react-leaflet';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
+import BaseLayerControl from '../components/BaseLayerControl';
 
 export default class MyMap extends Component {
   constructor(props) {
     super(props);
+    // new zealand coordinates
     this.state = {
-      lat: -39.006,
-      lng: 174.886,
-      zoom: 10,
+      lat: -40.9006,
+      lng: 173.486,
+      zoom: 5,
     };
   }
 
@@ -27,20 +29,16 @@ export default class MyMap extends Component {
             zoom={zoom}
             style={{ width: '100%', height: '500px' }}
             minZoom={5}
+            maxZoom={20}
           >
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.takiwa.co/osm_tiles/{z}/{x}/{y}.png"
-            />
-            <Marker position={position}>
+            <BaseLayerControl />
+            {/* <Marker position={position}>
               <Popup>
                 A pretty CSS3 popup. <br /> Easily customizable.
               </Popup>
-            </Marker>
+            </Marker> */}
           </Map>
-          <Link to="/page-2/">Go to page 2</Link>
-          <Link to="/map/">Go to page map</Link>
-          <Link to="/not/">Go to page not</Link>
+          <Link to="/">Go back to the homepage</Link>
         </Layout>
       );
     }

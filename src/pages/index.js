@@ -10,7 +10,7 @@ const IndexPage = () => (
     <SEO title="Home" />
     <h1>Hi people. I am Chao</h1>
     <p>Welcome to my new Gatsby site.</p>
-    <p>Build gatsby site with leaflet map</p>
+    <p>Build gatsby site with leafletJS and mapbox map styles</p>
     <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
       <Image />
     </div>

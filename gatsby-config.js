@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `My Gatsby Site`,
+    title: `My New Zealand Map`,
     description: `React leaflet map, data visualization`,
     author: `Chao Chen`,
   },
