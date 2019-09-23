@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import { Map, Marker, Popup } from 'react-leaflet';
+import 'react-leaflet-fullscreen/dist/styles.css';
+import FullscreenControl from 'react-leaflet-fullscreen';
 import Control from 'react-leaflet-control';
 import styled from 'styled-components';
 import Fullscreen from 'react-full-screen';
@@ -42,33 +44,34 @@ export default class MyMap extends Component {
         <Layout>
           <SEO title="Map" />
 
-          <Fullscreen
+          {/* <Fullscreen
             enabled={isFull}
             onChange={f => this.setState({ isFull: f })}
           >
-            <StyledMapPage>
-              <Map
-                center={position}
-                zoom={zoom}
-                style={{ width: '100%', height: '100%' }}
-                minZoom={4}
-                maxZoom={20}
-              >
-                <Control position="bottomleft">
+            <StyledMapPage> */}
+          <Map
+            center={position}
+            zoom={zoom}
+            style={{ width: '100%', height: '80vh' }}
+            minZoom={4}
+            maxZoom={20}
+          >
+            <FullscreenControl position="topleft" />
+            {/* <Control position="bottomleft">
                   <button type="button" onClick={this.toggleFullScreen}>
                     Fullscreen
                   </button>
-                </Control>
+                </Control> */}
 
-                <BaseLayerControl />
-                {/* <Marker position={position}>
+            <BaseLayerControl />
+            {/* <Marker position={position}>
               <Popup>
                 A pretty CSS3 popup. <br /> Easily customizable.
               </Popup>
             </Marker> */}
-              </Map>
-            </StyledMapPage>
-          </Fullscreen>
+          </Map>
+          {/* </StyledMapPage>
+          </Fullscreen> */}
           <Link to="/">Go back to the homepage</Link>
         </Layout>
       );
