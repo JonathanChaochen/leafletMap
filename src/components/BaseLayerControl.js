@@ -22,11 +22,12 @@ const BaseLayerControl = () => (
       return (
         <LayersControl.BaseLayer checked={index === 0} name={styleName}>
           <TileLayer
-            detectRetina
+            zoomOffset={-1}
+            tileSize={512}
             attribution={
               "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>"
             }
-            url={`https://api.mapbox.com/styles/v1/mapbox/${styleName}/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hhb2NoZW4iLCJhIjoiY2p3c2xqYW1pMDNxZzRibHlodjFuMmQwbiJ9.ntibxY-is20Rz4GMgA1Jww`} 
+            url={`https://api.mapbox.com/styles/v1/mapbox/${styleName}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hhb2NoZW4iLCJhIjoiY2p3c2xqYW1pMDNxZzRibHlodjFuMmQwbiJ9.ntibxY-is20Rz4GMgA1Jww`} 
           />
         </LayersControl.BaseLayer>
       );
