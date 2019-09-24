@@ -56,7 +56,7 @@ export default class MyMap extends Component {
             minZoom={4}
             maxZoom={20}
           >
-            <FullscreenControl position="topleft" />
+            <FullscreenControl position="topleft" forceSeparateButton />
             {/* <Control position="bottomleft">
                   <button type="button" onClick={this.toggleFullScreen}>
                     Fullscreen
