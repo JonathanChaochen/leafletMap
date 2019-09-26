@@ -5,20 +5,12 @@ import { BoxZoomControl } from 'react-leaflet-box-zoom';
 // Import to a different variable so you don't have to update the rest of your codes
 import MeasureControlDefault from 'react-leaflet-measure';
 
-// Wrap our new variable and assign it to the one we used before. The rest of the codes stays the same.
-const MeasureControl = withLeaflet(MeasureControlDefault);
+import Control from 'react-leaflet-control';
 
 import BaseLayerControl from './BaseLayerControl';
 
-const measureOptions = {
-  position: 'topright',
-  primaryLengthUnit: 'meters',
-  secondaryLengthUnit: 'kilometers',
-  primaryAreaUnit: 'sqmeters',
-  secondaryAreaUnit: 'acres',
-  activeColor: '#db4a29',
-  completedColor: '#9b2d14',
-};
+// Wrap our new variable and assign it to the one we used before. The rest of the codes stays the same.
+const MeasureControl = withLeaflet(MeasureControlDefault);
 
 export default class MyMap extends Component {
   constructor(props) {
@@ -29,6 +21,8 @@ export default class MyMap extends Component {
       lng: 173.486,
       zoom: 5,
     };
+
+    this.mapRef = React.createRef();
   }
 
   render() {
@@ -44,6 +38,7 @@ export default class MyMap extends Component {
           style={{ width: '100%', height: '100vh' }}
           minZoom={3}
           maxZoom={20}
+          ref={this.mapRef}
         >
           <BaseLayerControl />
           <BoxZoomControl position="topright" />
@@ -53,6 +48,18 @@ export default class MyMap extends Component {
             activeColor="#db4a29"
             completedColor="#9b2d14"
           />
+
+          <Control position="bottomleft">
+            <button
+              type="button"
+              onClick={() => {
+                const mapNode = this.mapRef.current.leafletElement;
+                mapNode.setView([lat, lng], zoom);
+              }}
+            >
+              New Zealand
+            </button>
+          </Control>
         </Map>
       );
     }
