@@ -1,10 +1,12 @@
 // provide control for change base layer
 
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import L from 'leaflet';
 import { TileLayer, LayersControl } from 'react-leaflet';
 
-export const mapboxMapStyles = [
+const mapboxMapStyles = [
   'streets-v11',
   'outdoors-v11',
   'light-v10',
@@ -19,8 +21,8 @@ export const mapboxMapStyles = [
 
 // add additional arcgis satellite layer. This layer has zoom level up to 21 in new Zealand area. more clear detail and update to recent years
 
-const BaseLayerControl = () => (
-  <LayersControl position="topright">
+const BaseLayerControl = ({ position }) => (
+  <LayersControl position={position}>
     {mapboxMapStyles.map((styleName, index) => {
       return (
         <LayersControl.BaseLayer
@@ -51,5 +53,13 @@ const BaseLayerControl = () => (
     </LayersControl.BaseLayer>
   </LayersControl>
 );
+
+BaseLayerControl.propTypes = {
+  position: PropTypes.string,
+};
+
+BaseLayerControl.defaultProps = {
+  position: 'topleft',
+};
 
 export default BaseLayerControl;

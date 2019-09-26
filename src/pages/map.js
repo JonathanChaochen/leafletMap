@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import { Map, Marker, Popup } from 'react-leaflet';
-import 'react-leaflet-fullscreen/dist/styles.css';
-import FullscreenControl from 'react-leaflet-fullscreen';
 import Control from 'react-leaflet-control';
 import styled from 'styled-components';
 import Fullscreen from 'react-full-screen';
@@ -56,7 +54,6 @@ export default class MyMap extends Component {
             minZoom={3}
             maxZoom={20}
           >
-            {/* <FullscreenControl position="topleft" forceSeparateButton /> */}
             {/* <Control position="bottomleft">
                   <button type="button" onClick={this.toggleFullScreen}>
                     Fullscreen
