@@ -41,7 +41,7 @@ const BaseLayerControl = () => (
     })}
 
     {/* This tiles just have 256 px * 256 px size image not like mapbox one above. I set detectRetina to true and maxZoom level needs to + 1 on retina */}
-    <LayersControl.BaseLayer name="satellite" key="satellite">
+    <LayersControl.BaseLayer name="high resolution satellite" key="satellite">
       <TileLayer
         maxZoom={L.Browser.retina ? 21 : 20}
         detectRetina
