@@ -52,11 +52,11 @@ export default class MyMap extends Component {
           <Map
             center={position}
             zoom={zoom}
-            style={{ width: '100%', height: '80vh' }}
-            minZoom={4}
+            style={{ width: '100%', height: '100vh' }}
+            minZoom={3}
             maxZoom={20}
           >
-            <FullscreenControl position="topleft" forceSeparateButton />
+            {/* <FullscreenControl position="topleft" forceSeparateButton /> */}
             {/* <Control position="bottomleft">
                   <button type="button" onClick={this.toggleFullScreen}>
                     Fullscreen
@@ -72,7 +72,6 @@ export default class MyMap extends Component {
           </Map>
           {/* </StyledMapPage>
           </Fullscreen> */}
-          <Link to="/">Go back to the homepage</Link>
         </Layout>
       );
     }

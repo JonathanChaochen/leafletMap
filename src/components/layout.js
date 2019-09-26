@@ -25,20 +25,20 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      {/* <Header siteTitle={data.site.siteMetadata.title} /> */}
       <div
         style={{
           margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0px 1.0875rem 1.45rem`,
+          // maxWidth: 960,
+          padding: `0px`,
           paddingTop: 0,
         }}
       >
         <main>{children}</main>
-        <footer>
+        {/* <footer>
           © {new Date().getFullYear()},{` `}
           <a href="https://www.yme.app">Chao Chen</a>
-        </footer>
+        </footer> */}
       </div>
     </>
   );
