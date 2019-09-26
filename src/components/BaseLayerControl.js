@@ -1,6 +1,7 @@
 // provide control for change base layer
 
 import React from 'react';
+import L from 'leaflet';
 import { TileLayer, LayersControl } from 'react-leaflet';
 
 export const mapboxMapStyles = [
@@ -15,6 +16,8 @@ export const mapboxMapStyles = [
   'navigation-guidance-day-v4',
   'navigation-guidance-night-v4',
 ];
+
+// add additional arcgis satellite layer. This layer has zoom level up to 21 in new Zealand area. more clear detail and update to recent years
 
 const BaseLayerControl = () => (
   <LayersControl position="topright">
@@ -36,6 +39,16 @@ const BaseLayerControl = () => (
         </LayersControl.BaseLayer>
       );
     })}
+
+    {/* This tiles just have 256 px * 256 px size image not like mapbox one above. I set detectRetina to true and maxZoom level needs to + 1 on retina */}
+    <LayersControl.BaseLayer name="satellite" key="satellite">
+      <TileLayer
+        maxZoom={L.Browser.retina ? 21 : 20}
+        detectRetina
+        attribution={'Tiles &copy; Esri &mdash; Source: Esri'}
+        url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+      />
+    </LayersControl.BaseLayer>
   </LayersControl>
 );
 
