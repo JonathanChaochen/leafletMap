@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
-import { Map, Marker, Popup, withLeaflet } from 'react-leaflet';
+import { Map, Marker, Popup } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
 import Control from 'react-leaflet-control';
 import 'leaflet-draw/dist/leaflet.draw.css';
