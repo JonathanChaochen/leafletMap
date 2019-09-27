@@ -59,7 +59,7 @@ BaseLayerControl.propTypes = {
 };
 
 BaseLayerControl.defaultProps = {
-  position: 'topleft',
+  position: 'topright',
 };
 
 export default BaseLayerControl;
