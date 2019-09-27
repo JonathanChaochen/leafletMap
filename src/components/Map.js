@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import { Map, Marker, Popup, withLeaflet } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
-// Import to a different variable so you don't have to update the rest of your codes
-import MeasureControlDefault from 'react-leaflet-measure';
-
 import Control from 'react-leaflet-control';
 
-import BaseLayerControl from './BaseLayerControl';
+import MeasureControl from './MeasureControl';
 
-// Wrap our new variable and assign it to the one we used before. The rest of the codes stays the same.
-const MeasureControl = withLeaflet(MeasureControlDefault);
+import BaseLayerControl from './BaseLayerControl';
 
 export default class MyMap extends Component {
   constructor(props) {
