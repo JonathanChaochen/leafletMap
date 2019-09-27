@@ -4,7 +4,8 @@ import { Map, Marker, Popup, withLeaflet } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
 import Control from 'react-leaflet-control';
 
-import MeasureControl from './MeasureControl';
+// // Import to a different variable so you don't have to update the rest of your codes
+// import MeasureControl from './MeasureControl';
 
 import BaseLayerControl from './BaseLayerControl';
 
@@ -38,12 +39,12 @@ export default class MyMap extends Component {
         >
           <BaseLayerControl />
           <BoxZoomControl position="topright" />
-          <MeasureControl
-            primaryLengthUnit="meters"
-            primaryAreaUnit="sqmeters"
-            activeColor="#db4a29"
-            completedColor="#9b2d14"
-          />
+          {/* <MeasureControl
+          primaryLengthUnit="meters"
+          primaryAreaUnit="sqmeters"
+          activeColor="#db4a29"
+          completedColor="#9b2d14"
+        /> */}
 
           <Control position="bottomleft">
             <button
