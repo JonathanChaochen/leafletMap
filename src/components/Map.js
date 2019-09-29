@@ -86,6 +86,17 @@ export default class MyMap extends Component {
           completedColor="#9b2d14"
         /> */}
 
+          <Control position="topright">
+            <button
+              style={{ padding: '5px' }}
+              onClick={() => {
+                const mapNode = this.mapRef.current.leafletElement;
+                mapNode.locate({ setView: true, maxZoom: 17 });
+              }}
+            >
+              locate
+            </button>
+          </Control>
           <DrawComponent />
           <BaseLayerControl position="topright" />
         </Map>
