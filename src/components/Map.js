@@ -1,48 +1,112 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
-import { Map, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import { Map, Marker, Popup, Circle } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
 import Control from 'react-leaflet-control';
 import 'leaflet-draw/dist/leaflet.draw.css';
 
 import homeImage from '../images/new zealand.png';
 
-// // Import to a different variable so you don't have to update the rest of your codes
-// import MeasureControl from './MeasureControl';
-
 import BaseLayerControl from './BaseLayerControl';
 import DrawComponent from './FeatureGroup';
 
-const HomeButton = styled.div`
-  background: url (${props => props.backgroundUrl}) no-repeat;
-  cursor: pointer;
-  height: 50px;
-  width: 50px;
-  z-index: 100000;
-`;
+// const HomeButton = styled.div`
+//   background: url (${props => props.backgroundUrl}) no-repeat;
+//   cursor: pointer;
+//   height: 50px;
+//   width: 50px;
+//   z-index: 100000;
+// `;
 
 export default class MyMap extends Component {
   constructor(props) {
     super(props);
     // new zealand coordinates
     this.state = {
+      latlng: { lat: -40.9006, lng: 173.486 },
       lat: -40.9006,
       lng: 173.486,
       zoom: 5,
+      radius: 0,
+      locater: false,
     };
 
-    this.mapRef = React.createRef();
+    this.mapRef = React.createRef(null);
   }
 
+  /**
+   *  add listener to map
+   */
+  componentDidMount() {
+    // listen to location event from map element
+    this.mapRef.current.leafletElement.on(
+      'locationfound',
+      this.onLocationFound
+    );
+    this.mapRef.current.leafletElement.on(
+      'locationerror',
+      this.onLocationError
+    );
+  }
+
+  /**
+   *  remove listener from map
+   */
+  componentWillUnmount() {
+    this.mapRef.current.leafletElement.off(
+      'locationfound',
+      this.onLocationFound
+    );
+    this.mapRef.current.leafletElement.off(
+      'locationerror',
+      this.onLocationError
+    );
+  }
+
+  /* ------------on location method---------- */
+  onLocationFound = e => {
+    // console.log('TCL: MyMap -> onLocationFound -> e', e);
+    // const mapNode = this.mapRef.current.leafletElement;
+    const radius = e.accuracy / 2;
+
+    this.setState({ latlng: e.latlng, radius, locater: true, zoom: 16 });
+    // L.marker(e.latlng)
+    //   .addTo(mapNode)
+    //   .bindPopup(`You are within ${radius} meters from this point`)
+    //   .openPopup();
+
+    // L.circle(e.latlng, radius).addTo(mapNode);
+  };
+
+  onLocationError = e => {
+    console.log('TCL: MyMap -> onLocationError -> e', e);
+  };
+  /* ---------------------------------------- */
+
+  locate = () => {
+    const mapNode = this.mapRef.current.leafletElement;
+    mapNode.locate({ setView: true, maxZoom: 16 });
+  };
+
+  clearLayer = () => {
+    // const mapNode = this.mapRef.current.leafletElement;
+    // mapNode.eachLayer(layer => {
+    //   console.log('TCL: MyMap -> clearLayer -> layer', layer);
+    //   mapNode.removeLayer(layer);
+    // });
+    this.setState({ locater: false });
+  };
+
   render() {
-    const { lat, lng, zoom } = this.state;
-    const position = [lat, lng];
+    const { lat, lng, zoom, latlng, radius, locater } = this.state;
+    // const position = [lat, lng];
 
     if (typeof window !== 'undefined') {
       return (
         <Map
-          center={position}
+          center={latlng}
           zoomControl={false}
           zoom={zoom}
           style={{ width: '100%', height: '100vh' }}
@@ -50,8 +114,8 @@ export default class MyMap extends Component {
           maxZoom={20}
           ref={this.mapRef}
         >
-          <Control position="topleft">
-            {/* <HomeButton
+          {/* <Control position="topleft"> */}
+          {/* <HomeButton
               backgroundUrl={homeImage}
               // type="button"
               onClick={() => {
@@ -59,7 +123,7 @@ export default class MyMap extends Component {
                 mapNode.setView([lat, lng], zoom);
               }}
             > */}
-            <img
+          {/* <img
               title="New Zealand"
               style={{
                 borderRadius: '25px',
@@ -75,9 +139,9 @@ export default class MyMap extends Component {
                 const mapNode = this.mapRef.current.leafletElement;
                 mapNode.setView([lat, lng], zoom);
               }}
-            />
-            {/* </HomeButton> */}
-          </Control>
+            /> */}
+          {/* </HomeButton> */}
+          {/* </Control> */}
           {/* <BoxZoomControl position="topright" /> */}
           {/* <MeasureControl
           primaryLengthUnit="meters"
@@ -88,17 +152,40 @@ export default class MyMap extends Component {
 
           <Control position="topright">
             <button
-              style={{ padding: '5px' }}
-              onClick={() => {
-                const mapNode = this.mapRef.current.leafletElement;
-                mapNode.locate({ setView: true, maxZoom: 17 });
-              }}
+              type="button"
+              style={{ padding: '6px' }}
+              onClick={this.locate}
             >
-              locate
+              Locate
+            </button>
+          </Control>
+
+          {/* <Control position="topright">
+            <button
+              type="button"
+              style={{ padding: '6px' }}
+              onClick={() => setInterval(this.locate, 2000)}
+            >
+              Navigation
+            </button>
+          </Control> */}
+          <Control position="topright">
+            <button
+              type="button"
+              style={{ padding: '6px' }}
+              onClick={this.clearLayer}
+            >
+              Clear
             </button>
           </Control>
           <DrawComponent />
           <BaseLayerControl position="topright" />
+
+          {locater && (
+            <Marker position={latlng}>
+              <Popup>{`You are within ${radius} meters from this point`}</Popup>
+            </Marker>
+          )}
         </Map>
       );
     }
