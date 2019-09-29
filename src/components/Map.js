@@ -20,6 +20,19 @@ import DrawComponent from './FeatureGroup';
 //   z-index: 100000;
 // `;
 
+const ControlButton = styled.a`
+  cursor: pointer;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  background: #fff;
+  color: black;
+  padding: 6px;
+  &:hover {
+    color: #333;
+    background: #f4f4f4;
+  }
+`;
+
 export default class MyMap extends Component {
   constructor(props) {
     super(props);
@@ -151,13 +164,21 @@ export default class MyMap extends Component {
         /> */}
 
           <Control position="topright">
-            <button
-              type="button"
-              style={{ padding: '6px' }}
-              onClick={this.locate}
+            <div
+              style={{
+                border: '2px solid rgba(0, 0, 0, 0.2)',
+                borderRadius: '2px',
+              }}
             >
-              Locate
-            </button>
+              <ControlButton type="button" onClick={this.locate}>
+                Locate
+              </ControlButton>
+              {locater && (
+                <ControlButton type="button" onClick={this.clearLayer}>
+                  &times;
+                </ControlButton>
+              )}
+            </div>
           </Control>
 
           {/* <Control position="topright">
@@ -169,15 +190,7 @@ export default class MyMap extends Component {
               Navigation
             </button>
           </Control> */}
-          <Control position="topright">
-            <button
-              type="button"
-              style={{ padding: '6px' }}
-              onClick={this.clearLayer}
-            >
-              Clear
-            </button>
-          </Control>
+
           <DrawComponent />
           <BaseLayerControl position="topright" />
 
