@@ -48,7 +48,7 @@ const BaseLayerControl = ({ position }) => (
         maxZoom={L.Browser.retina ? 21 : 20}
         detectRetina
         attribution={'Tiles &copy; Esri &mdash; Source: Esri'}
-        url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
       />
     </LayersControl.BaseLayer>
   </LayersControl>
