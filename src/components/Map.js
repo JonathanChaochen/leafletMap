@@ -6,11 +6,16 @@ import { Map, Marker, Popup, Circle } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
 import Control from 'react-leaflet-control';
 import 'leaflet-draw/dist/leaflet.draw.css';
+import { Navigation } from 'styled-icons/material/Navigation';
 
 import homeImage from '../images/new zealand.png';
 
 import BaseLayerControl from './BaseLayerControl';
 import DrawComponent from './FeatureGroup';
+
+const GreyNavigation = styled(Navigation)`
+  color: ${({ active }) => (active ? '#444' : '#bbb')};
+`;
 
 // const HomeButton = styled.div`
 //   background: url (${props => props.backgroundUrl}) no-repeat;
@@ -20,16 +25,18 @@ import DrawComponent from './FeatureGroup';
 //   z-index: 100000;
 // `;
 
-const ControlButton = styled.a`
+const ControlButton = styled.div`
   cursor: pointer;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
   background: #fff;
   color: black;
   padding: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-clip: padding-box;
   &:hover {
     color: #333;
     background: #f4f4f4;
+    background-clip: padding-box;
   }
 `;
 
@@ -100,16 +107,12 @@ export default class MyMap extends Component {
 
   locate = () => {
     const mapNode = this.mapRef.current.leafletElement;
-    mapNode.locate({ setView: true, maxZoom: 16 });
-  };
-
-  clearLayer = () => {
-    // const mapNode = this.mapRef.current.leafletElement;
-    // mapNode.eachLayer(layer => {
-    //   console.log('TCL: MyMap -> clearLayer -> layer', layer);
-    //   mapNode.removeLayer(layer);
-    // });
-    this.setState({ locater: false });
+    const { locater } = this.state;
+    if (locater) {
+      this.setState({ locater: false });
+    } else {
+      mapNode.locate({ setView: true, maxZoom: 16 });
+    }
   };
 
   render() {
@@ -164,21 +167,9 @@ export default class MyMap extends Component {
         /> */}
 
           <Control position="topright">
-            <div
-              style={{
-                border: '2px solid rgba(0, 0, 0, 0.2)',
-                borderRadius: '2px',
-              }}
-            >
-              <ControlButton type="button" onClick={this.locate}>
-                Locate
-              </ControlButton>
-              {locater && (
-                <ControlButton type="button" onClick={this.clearLayer}>
-                  &times;
-                </ControlButton>
-              )}
-            </div>
+            <ControlButton onClick={this.locate}>
+              <GreyNavigation size="32" title="Locate" active={locater} />
+            </ControlButton>
           </Control>
 
           {/* <Control position="topright">
