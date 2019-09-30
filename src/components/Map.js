@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import L from 'leaflet';
 import { Map, Marker, Popup, Circle, ScaleControl } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
@@ -13,6 +13,21 @@ import homeImage from '../images/new zealand.png';
 
 import BaseLayerControl from './BaseLayerControl';
 import DrawComponent from './FeatureGroup';
+
+// Create the keyframes
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const RotateSpinner = styled(Spinner)`
+  animation: ${rotate} 2s linear infinite;
+`;
 
 const GreyNavigation = styled(Navigation)`
   color: ${({ active }) => (active ? '#444' : '#666')};
@@ -181,7 +196,7 @@ export default class MyMap extends Component {
           <Control position="topright">
             <ControlButton>
               {locateLoading ? (
-                <Spinner size="32" />
+                <RotateSpinner size="32" />
               ) : (
                 <GreyNavigation
                   size="32"
