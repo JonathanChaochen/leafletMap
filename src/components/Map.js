@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
 import L from 'leaflet';
-import { Map, Marker, Popup, Circle } from 'react-leaflet';
+import { Map, Marker, Popup, Circle, ScaleControl } from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
 import Control from 'react-leaflet-control';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import { Navigation } from 'styled-icons/material/Navigation';
+import { Spinner } from 'styled-icons/evil/Spinner';
 
 import homeImage from '../images/new zealand.png';
 
@@ -14,7 +15,7 @@ import BaseLayerControl from './BaseLayerControl';
 import DrawComponent from './FeatureGroup';
 
 const GreyNavigation = styled(Navigation)`
-  color: ${({ active }) => (active ? '#444' : '#bbb')};
+  color: ${({ active }) => (active ? '#444' : '#666')};
 `;
 
 // const HomeButton = styled.div`
@@ -50,7 +51,8 @@ export default class MyMap extends Component {
       lng: 173.486,
       zoom: 5,
       radius: 0,
-      locater: false,
+      locater: false, // if locate have result.
+      locateLoading: false,
     };
 
     this.mapRef = React.createRef(null);
@@ -87,11 +89,15 @@ export default class MyMap extends Component {
 
   /* ------------on location method---------- */
   onLocationFound = e => {
-    // console.log('TCL: MyMap -> onLocationFound -> e', e);
-    // const mapNode = this.mapRef.current.leafletElement;
     const radius = e.accuracy / 2;
+    this.setState({
+      latlng: e.latlng,
+      radius,
+      locater: true,
+      zoom: 16,
+      locateLoading: false,
+    });
 
-    this.setState({ latlng: e.latlng, radius, locater: true, zoom: 16 });
     // L.marker(e.latlng)
     //   .addTo(mapNode)
     //   .bindPopup(`You are within ${radius} meters from this point`)
@@ -101,22 +107,28 @@ export default class MyMap extends Component {
   };
 
   onLocationError = e => {
-    console.log('TCL: MyMap -> onLocationError -> e', e);
+    this.setState({ locateLoading: false });
+    // console.log('TCL: MyMap -> onLocationError -> e', e);
   };
   /* ---------------------------------------- */
 
   locate = () => {
     const mapNode = this.mapRef.current.leafletElement;
+
     const { locater } = this.state;
+
+    // remove locater and loading
     if (locater) {
       this.setState({ locater: false });
     } else {
+      // start locate process by setting loading and trigger locate
+      this.setState({ locateLoading: true });
       mapNode.locate({ setView: true, maxZoom: 16 });
     }
   };
 
   render() {
-    const { lat, lng, zoom, latlng, radius, locater } = this.state;
+    const { zoom, latlng, radius, locater, locateLoading } = this.state;
     // const position = [lat, lng];
 
     if (typeof window !== 'undefined') {
@@ -167,20 +179,19 @@ export default class MyMap extends Component {
         /> */}
 
           <Control position="topright">
-            <ControlButton onClick={this.locate}>
-              <GreyNavigation size="32" title="Locate" active={locater} />
+            <ControlButton>
+              {locateLoading ? (
+                <Spinner size="32" />
+              ) : (
+                <GreyNavigation
+                  size="32"
+                  title="Locate"
+                  active={locater}
+                  onClick={this.locate}
+                />
+              )}
             </ControlButton>
           </Control>
-
-          {/* <Control position="topright">
-            <button
-              type="button"
-              style={{ padding: '6px' }}
-              onClick={() => setInterval(this.locate, 2000)}
-            >
-              Navigation
-            </button>
-          </Control> */}
 
           <DrawComponent />
           <BaseLayerControl position="topright" />
@@ -190,6 +201,8 @@ export default class MyMap extends Component {
               <Popup>{`You are within ${radius} meters from this point`}</Popup>
             </Marker>
           )}
+
+          <ScaleControl position="bottomleft" />
         </Map>
       );
     }
