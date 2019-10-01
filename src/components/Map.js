@@ -140,7 +140,7 @@ export default class MyMap extends Component {
           center={latlng}
           zoomControl={false}
           zoom={zoom}
-          style={{ width: '100%', height: '100vh' }}
+          style={{ width: '100%', height: '100%', position: 'absolute' }}
           minZoom={3}
           maxZoom={20}
           ref={this.mapRef}
