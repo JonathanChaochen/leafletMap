@@ -2,17 +2,22 @@ import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import styled, { keyframes } from 'styled-components';
 import L from 'leaflet';
-import { Map, Marker, Popup, Circle, ScaleControl } from 'react-leaflet';
+import {
+  Map,
+  Marker,
+  Popup,
+  Circle,
+  ScaleControl,
+  CircleMarker,
+} from 'react-leaflet';
 import { BoxZoomControl } from 'react-leaflet-box-zoom';
 import Control from 'react-leaflet-control';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import { Navigation } from 'styled-icons/material/Navigation';
 import { Spinner } from 'styled-icons/evil/Spinner';
 
-import homeImage from '../images/new zealand.png';
-
 import BaseLayerControl from './BaseLayerControl';
-import DrawComponent from './FeatureGroup';
+import DrawComponent from './LeafletDrawControl';
 
 // Create the keyframes
 const rotate = keyframes`
@@ -30,16 +35,8 @@ const RotateSpinner = styled(Spinner)`
 `;
 
 const GreyNavigation = styled(Navigation)`
-  color: ${({ active }) => (active ? '#444' : '#666')};
+  color: ${({ active }) => (active ? '#fc8428' : '#555')};
 `;
-
-// const HomeButton = styled.div`
-//   background: url (${props => props.backgroundUrl}) no-repeat;
-//   cursor: pointer;
-//   height: 50px;
-//   width: 50px;
-//   z-index: 100000;
-// `;
 
 const ControlButton = styled.div`
   cursor: pointer;
@@ -62,8 +59,6 @@ export default class MyMap extends Component {
     // new zealand coordinates
     this.state = {
       latlng: { lat: -40.9006, lng: 173.486 },
-      lat: -40.9006,
-      lng: 173.486,
       zoom: 5,
       radius: 0,
       locater: false, // if locate have result.
@@ -104,25 +99,18 @@ export default class MyMap extends Component {
 
   /* ------------on location method---------- */
   onLocationFound = e => {
-    const radius = e.accuracy / 2;
+    const radius = e.accuracy;
     this.setState({
       latlng: e.latlng,
       radius,
       locater: true,
-      zoom: 16,
+      zoom: 17,
       locateLoading: false,
     });
-
-    // L.marker(e.latlng)
-    //   .addTo(mapNode)
-    //   .bindPopup(`You are within ${radius} meters from this point`)
-    //   .openPopup();
-
-    // L.circle(e.latlng, radius).addTo(mapNode);
   };
 
   onLocationError = e => {
-    this.setState({ locateLoading: false });
+    this.setState({ locateLoading: false, radius: 0 });
     // console.log('TCL: MyMap -> onLocationError -> e', e);
   };
   /* ---------------------------------------- */
@@ -134,11 +122,11 @@ export default class MyMap extends Component {
 
     // remove locater and loading
     if (locater) {
-      this.setState({ locater: false });
+      this.setState({ locater: false, radius: 0 });
     } else {
       // start locate process by setting loading and trigger locate
       this.setState({ locateLoading: true });
-      mapNode.locate({ setView: true, maxZoom: 16 });
+      mapNode.locate({ setView: true, maxZoom: 17 });
     }
   };
 
@@ -157,34 +145,6 @@ export default class MyMap extends Component {
           maxZoom={20}
           ref={this.mapRef}
         >
-          {/* <Control position="topleft"> */}
-          {/* <HomeButton
-              backgroundUrl={homeImage}
-              // type="button"
-              onClick={() => {
-                const mapNode = this.mapRef.current.leafletElement;
-                mapNode.setView([lat, lng], zoom);
-              }}
-            > */}
-          {/* <img
-              title="New Zealand"
-              style={{
-                borderRadius: '25px',
-                display: 'inline-block',
-                marginBottom: '0',
-                cursor: 'pointer',
-              }}
-              src={homeImage}
-              alt="New Zealand"
-              height="50px"
-              width="50px"
-              onClick={() => {
-                const mapNode = this.mapRef.current.leafletElement;
-                mapNode.setView([lat, lng], zoom);
-              }}
-            /> */}
-          {/* </HomeButton> */}
-          {/* </Control> */}
           {/* <BoxZoomControl position="topright" /> */}
           {/* <MeasureControl
           primaryLengthUnit="meters"
@@ -209,14 +169,29 @@ export default class MyMap extends Component {
           </Control>
 
           <DrawComponent />
-          <BaseLayerControl position="topright" />
 
           {locater && (
-            <Marker position={latlng}>
-              <Popup>{`You are within ${radius} meters from this point`}</Popup>
-            </Marker>
+            <Circle
+              center={latlng}
+              radius={radius}
+              color="#136AEC"
+              fillColor="#136AEC"
+              fillOpacity={0.15}
+              weight={0}
+            >
+              <CircleMarker
+                center={latlng}
+                radius={9}
+                color="#fff"
+                fillColor="#2A93EE"
+                fillOpacity={1}
+                weight={3}
+                opacity={1}
+              />
+            </Circle>
           )}
 
+          <BaseLayerControl position="bottomright" />
           <ScaleControl position="bottomleft" />
         </Map>
       );
