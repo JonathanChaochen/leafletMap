@@ -1,8 +1,5 @@
-// provide control for change base layer
-
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import L from 'leaflet';
 import { TileLayer, LayersControl } from 'react-leaflet';
 
@@ -19,9 +16,7 @@ const mapboxMapStyles = [
   'navigation-guidance-night-v4',
 ];
 
-// add additional arcgis satellite layer. This layer has zoom level up to 21 in new Zealand area. more clear detail and update to recent years
-
-const BaseLayerControl = ({ position }) => (
+const BaseLayerControl = ({ position = 'topright' }) => (
   <LayersControl position={position}>
     {mapboxMapStyles.map((styleName, index) => {
       return (
@@ -33,21 +28,22 @@ const BaseLayerControl = ({ position }) => (
           <TileLayer
             zoomOffset={-1}
             tileSize={512}
-            attribution={
-              "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>"
-            }
-            url={`https://api.mapbox.com/styles/v1/mapbox/${styleName}/tiles/{z}/{x}/{y}{r}?access_token=pk.eyJ1IjoiY2hhb2NoZW4iLCJhIjoiY2p3c2xqYW1pMDNxZzRibHlodjFuMmQwbiJ9.ntibxY-is20Rz4GMgA1Jww`}
+            maxZoom={20}
+            maxNativeZoom={19}
+            attribution="© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>"
+            url={`https://api.mapbox.com/styles/v1/mapbox/${styleName}/tiles/{z}/{x}/{y}{r}?access_token=${import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}`}
           />
         </LayersControl.BaseLayer>
       );
     })}
 
-    {/* This tiles just have 256 px * 256 px size image not like mapbox one above. I set detectRetina to true and maxZoom level needs to + 1 on retina */}
+    {/* Esri Satellite Layer */}
     <LayersControl.BaseLayer name="high resolution satellite" key="satellite">
       <TileLayer
-        maxZoom={L.Browser.retina ? 21 : 20}
-        detectRetina
-        attribution={'Tiles &copy; Esri &mdash; Source: Esri'}
+        maxZoom={21}
+        maxNativeZoom={L.Browser.retina ? 21 : 20}
+        detectRetina={true}
+        attribution="Tiles &copy; Esri &mdash; Source: Esri"
         url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
       />
     </LayersControl.BaseLayer>
@@ -56,10 +52,6 @@ const BaseLayerControl = ({ position }) => (
 
 BaseLayerControl.propTypes = {
   position: PropTypes.string,
-};
-
-BaseLayerControl.defaultProps = {
-  position: 'topright',
 };
 
 export default BaseLayerControl;
